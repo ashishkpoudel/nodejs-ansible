@@ -30,3 +30,10 @@
       - docker-buildx-plugin 
       - docker-compose-plugin
     state: present
+
+- name: Temp (fix permission issue)
+  file:
+    path: /var/run/docker.sock
+    owner: ubuntu
+    group: ubuntu
+    state: touch

@@ -1,5 +1,5 @@
 ---
-- name: Configure docker
+- name: Authenticate docker
   command: docker login ghcr.io -u USERNAME --password-stdin
   args:
     stdin: "{{ gh_personal_access_token }}"

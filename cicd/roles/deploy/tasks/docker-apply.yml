@@ -1,3 +1,14 @@
 ---
-- debug:
-    msg: "Published app image: {{ app_image }}"
+- name: Authenticate docker
+  command: docker login ghcr.io -u USERNAME --password-stdin
+  args:
+    stdin: "{{ gh_personal_access_token }}"
+
+- name: Run Nodejs api
+  docker_container:
+    name: nodejs-api
+    detach: yes
+    restart_policy: unless-stopped
+    image: "{{ app_image }}"
+    ports:
+      - ":3100"
