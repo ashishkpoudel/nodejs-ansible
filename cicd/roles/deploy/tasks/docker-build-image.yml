@@ -1,0 +1,36 @@
+---
+- name: Configure docker
+  command: docker login ghcr.io -u USERNAME --password-stdin
+  args:
+    stdin: "{{ gh_personal_access_token }}"
+  delegate_to: localhost
+
+- name: Get commit hash
+  command: git rev-parse --short HEAD
+  register: commit_hash
+  delegate_to: localhost
+
+- name: Set app image
+  set_fact:
+    app_image: "ghcr.io/ashishkpoudel/node-api:{{ commit_hash.stdout }}"
+  delegate_to: localhost
+
+- name: Build docker image
+  command:
+    argv:
+      - docker
+      - build
+      - -t
+      - "{{ app_image }}"
+      - --target
+      - production
+      - -f
+      - Dockerfile
+      - .
+  args:
+   chdir: "{{ project_dir }}"
+  delegate_to: localhost
+
+- name: Push docker image
+  command: docker push "{{ app_image }}"
+  delegate_to: localhost

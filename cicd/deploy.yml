@@ -1,0 +1,10 @@
+---
+- name: Deploy Application
+  hosts: app_server
+  vars_files:
+    - "vars/common.yml"
+  vars_prompt:
+    - name: gh_personal_access_token
+      prompt: Enter Github Personal Access Token
+  roles:
+    - deploy

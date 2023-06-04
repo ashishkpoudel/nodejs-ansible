@@ -1,1 +1,3 @@
 ---
+- import_tasks: docker-build-image.yml
+- import_tasks: docker-apply.yml

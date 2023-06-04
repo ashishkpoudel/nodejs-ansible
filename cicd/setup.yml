@@ -1,12 +1,6 @@
 ---
-
 - name: Install common dependencies
   hosts: app_server
   become: true
   roles:
     - common
-
-- name: Deploy application
-  hosts: app_server
-  roles:
-    - deploy
