@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: production
+    image: node-api
+    container_name: node-api
+    networks:
+      - intranet
+    ports:
+      - 3100:3100
+
+  caddy:
+    image: caddy
+    container_name: node-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - type: bind
+        source: ./caddy
+        target: /etc/caddy
+    networks:
+      - intranet
+
+networks:
+  intranet:
