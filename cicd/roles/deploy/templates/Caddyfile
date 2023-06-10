@@ -1,5 +1,0 @@
-localhost {
-	handle {
-		reverse_proxy api:3100
-	}
-}

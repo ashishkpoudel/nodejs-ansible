@@ -1,0 +1,5 @@
+https://54.152.123.110.nip.io {
+	reverse_proxy api:3100 {
+    header_down Access-Control-Allow-Origin *
+  }
+}

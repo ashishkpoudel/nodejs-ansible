@@ -4,11 +4,21 @@
   args:
     stdin: "{{ gh_personal_access_token }}"
 
-- name: Run Nodejs api
-  docker_container:
-    name: nodejs-api
-    detach: yes
-    restart_policy: unless-stopped
-    image: "{{ app_image }}"
-    ports:
-      - ":3100"
+- name: Ensure caddy folder exists
+  file:
+    path: ~/caddy
+    state: directory
+
+- name: Copy docker config
+  template:
+    src: docker-compose.yml
+    dest: ~/docker-compose.yml
+
+- name: Copy caddy config
+  template:
+    src: caddy/Caddyfile
+    dest: ~/caddy/Caddyfile
+
+- name: Run services
+  command:
+    cmd: docker-compose up -d
