@@ -1,24 +1,37 @@
 ---
-- name: Authenticate docker
+- name: authenticate docker
   command: docker login ghcr.io -u USERNAME --password-stdin
   args:
     stdin: "{{ gh_personal_access_token }}"
 
-- name: Ensure caddy folder exists
-  file:
-    path: ~/caddy
-    state: directory
+- name: Set domain
+  set_fact:
+    app_domain: "{{ domain_map[app_env] }}"
 
-- name: Copy docker config
+- name: copy docker config
   template:
-    src: docker-compose.yml
+    src: docker-compose.yml.j2
     dest: ~/docker-compose.yml
 
-- name: Copy caddy config
+- name: ensure caddy folder exists
+  file:
+    path: ~/caddy/sites
+    state: directory
+
+- name: copy root caddy file
   template:
-    src: caddy/Caddyfile
+    src: Caddyfile
     dest: ~/caddy/Caddyfile
 
-- name: Run services
+- name: copy caddy sites config
+  template:
+    src: Caddyfile.j2
+    dest: ~/caddy/sites/{{ app_domain }}
+
+- name: run services
   command:
     cmd: docker-compose up -d
+
+- name: reload caddy
+  command:
+    cmd: docker restart caddy

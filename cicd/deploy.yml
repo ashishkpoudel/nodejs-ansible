@@ -4,6 +4,8 @@
   vars_files:
     - "vars/common.yml"
   vars_prompt:
+    - name: app_env
+      prompt: Enter app env to deploy
     - name: gh_personal_access_token
       prompt: Enter Github Personal Access Token
   roles:

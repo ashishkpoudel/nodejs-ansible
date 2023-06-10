@@ -1,0 +1,5 @@
+{{ app_domain }} {
+	reverse_proxy {{ app_container }}:3100 {
+        header_down Access-Control-Allow-Origin *
+    }
+}

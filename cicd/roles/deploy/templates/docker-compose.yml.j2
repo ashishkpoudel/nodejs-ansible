@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
       target: production
     image: "{{ app_image }}"
-    container_name: "nodejs-api-{{ commit_hash.stdout }}"
+    container_name: "{{ app_container }}"
     networks:
       - intranet
     ports:
@@ -15,7 +15,7 @@ services:
 
   caddy:
     image: caddy
-    container_name: nodejs-caddy
+    container_name: caddy
     ports:
       - "80:80"
       - "443:443"

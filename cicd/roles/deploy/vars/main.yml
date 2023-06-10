@@ -1,0 +1,4 @@
+domain_map:
+  production: routeasis.com
+  staging: staging.routeasis.com
+  dev: dev.routeasis.com

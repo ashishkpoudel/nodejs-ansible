@@ -15,6 +15,11 @@
     app_image: "ghcr.io/ashishkpoudel/node-api:{{ commit_hash.stdout }}"
   delegate_to: localhost
 
+- name: Set app container
+  set_fact:
+    app_container: "nodejs-api-{{ app_env }}"
+  delegate_to: localhost
+
 - name: Build docker image
   command:
     argv:
