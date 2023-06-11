@@ -8,29 +8,38 @@
   set_fact:
     app_domain: "{{ domain_map[app_env] }}"
 
-- name: copy docker config
-  template:
-    src: docker-compose.yml.j2
-    dest: ~/docker-compose.yml
+- name: configure caddy
+  block:
+    - name: ensure caddy folder exists
+      file:
+        path: ~/caddy/sites
+        state: directory
 
-- name: ensure caddy folder exists
-  file:
-    path: ~/caddy/sites
-    state: directory
+    - name: copy root caddyfile
+      template:
+        src: Caddyfile
+        dest: ~/caddy/Caddyfile
 
-- name: copy root caddy file
-  template:
-    src: Caddyfile
-    dest: ~/caddy/Caddyfile
+    - name: copy site specific caddyfile
+      template:
+        src: Caddyfile.j2
+        dest: ~/caddy/sites/{{ app_domain }}
 
-- name: copy caddy sites config
-  template:
-    src: Caddyfile.j2
-    dest: ~/caddy/sites/{{ app_domain }}
+- name: configure docker config
+  block:
+    - name: copy root docker-compose
+      template:
+        src: docker-compose.yml
+        dest: ~/docker-compose.yml
+
+    - name: copy site specific docker-compose
+      template:
+        src: docker-compose.yml.j2
+        dest: ~/docker-compose-{{ app_env }}.yml
 
 - name: run services
   command:
-    cmd: docker-compose up -d
+    cmd: docker-compose -f docker-compose.yml -f docker-compose-{{ app_env }}.yml up -d
 
 - name: reload caddy
   command:

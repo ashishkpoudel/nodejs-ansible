@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  api:
+  {{ app_container }}:
     build:
       context: ./
       dockerfile: Dockerfile
@@ -11,20 +11,4 @@ services:
     networks:
       - intranet
     ports:
-      - 3100:3100
-
-  caddy:
-    image: caddy
-    container_name: caddy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - type: bind
-        source: ./caddy
-        target: /etc/caddy
-    networks:
-      - intranet
-
-networks:
-  intranet:
+      - 3100
