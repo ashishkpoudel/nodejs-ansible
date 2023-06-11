@@ -1,5 +1,5 @@
 [app_server]
-54.152.123.110
+54.205.215.129
 
 [app_server:vars]
 ansible_ssh_user=ubuntu

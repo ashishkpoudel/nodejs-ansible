@@ -17,12 +17,12 @@
 
     - name: copy root caddyfile
       template:
-        src: Caddyfile
+        src: caddy/Caddyfile
         dest: ~/caddy/Caddyfile
 
     - name: copy site specific caddyfile
       template:
-        src: Caddyfile.j2
+        src: caddy/sites/Caddyfile.j2
         dest: ~/caddy/sites/{{ app_domain }}
 
 - name: configure docker config
@@ -38,9 +38,14 @@
         dest: ~/docker-compose-{{ app_env }}.yml
 
 - name: run services
-  command:
-    cmd: docker-compose -f docker-compose.yml -f docker-compose-{{ app_env }}.yml up -d
+  block:
+    - name: common services
+      command: "{{ item }}"
+      with_items:
+        - docker-compose -f docker-compose.yml up -d caddy
+        - docker-compose restart caddy
 
-- name: reload caddy
-  command:
-    cmd: docker restart caddy
+    - name: app service
+      command: docker-compose -f docker-compose.yml -f docker-compose-{{ app_env }}.yml up -d {{ app_container }}
+
+
