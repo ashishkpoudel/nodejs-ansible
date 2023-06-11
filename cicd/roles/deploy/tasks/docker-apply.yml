@@ -4,7 +4,7 @@
   args:
     stdin: "{{ gh_personal_access_token }}"
 
-- name: Set domain
+- name: set domain
   set_fact:
     app_domain: "{{ domain_map[app_env] }}"
 
@@ -47,5 +47,3 @@
 
     - name: app service
       command: docker-compose -f docker-compose.yml -f docker-compose-{{ app_env }}.yml up -d {{ app_container }}
-
-

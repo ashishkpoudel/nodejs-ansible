@@ -1,26 +1,26 @@
 ---
-- name: Authenticate docker
+- name: authenticate docker
   command: docker login ghcr.io -u USERNAME --password-stdin
   args:
     stdin: "{{ gh_personal_access_token }}"
   delegate_to: localhost
 
-- name: Get commit hash
+- name: get commit hash
   command: git rev-parse --short HEAD
   register: commit_hash
   delegate_to: localhost
 
-- name: Set app image
+- name: set app image
   set_fact:
     app_image: "ghcr.io/ashishkpoudel/node-api:{{ commit_hash.stdout }}"
   delegate_to: localhost
 
-- name: Set app container
+- name: set app container
   set_fact:
     app_container: "nodejs-api-{{ app_env }}"
   delegate_to: localhost
 
-- name: Build docker image
+- name: build docker image
   command:
     argv:
       - docker
@@ -36,6 +36,6 @@
    chdir: "{{ project_dir }}"
   delegate_to: localhost
 
-- name: Push docker image
+- name: push docker image
   command: docker push "{{ app_image }}"
   delegate_to: localhost

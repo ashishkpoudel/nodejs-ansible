@@ -1,12 +1,12 @@
 ---
-- name: Deploy Application
+- name: deploy application
   hosts: app_server
   vars_files:
     - "vars/common.yml"
   vars_prompt:
     - name: app_env
-      prompt: Enter app env to deploy
+      prompt: App env to deploy
     - name: gh_personal_access_token
-      prompt: Enter Github Personal Access Token
+      prompt: Github Personal Access Token
   roles:
     - deploy
