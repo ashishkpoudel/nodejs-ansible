@@ -11,4 +11,4 @@ Deploy your nodejs app on ec2 instance using docker and ansible.
 
 - [x] Setup multiple environment (prod, staging, dev). It is preferred to use one ec2 instance for each environment.
 - [ ] Setup worker instance to run queue jobs. Worker instance does not have to expose http port
-- [ ] Hook github action for deployment workflow
+- [x] Hook github action for deployment workflow
