@@ -27,4 +27,6 @@ jobs:
     
       - name: Run ansible playbook
         working-directory: cicd
-        run: ansible-playbook --verbose deploy.yaml --extra-vars "app_env=${{ github.event.client_payload.environment }} gh_personal_access_token=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}"
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > ./credentials/ssh-key.pem
+          ansible-playbook --verbose deploy.yaml --extra-vars "app_env=${{ github.event.client_payload.environment }} gh_personal_access_token=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}"
