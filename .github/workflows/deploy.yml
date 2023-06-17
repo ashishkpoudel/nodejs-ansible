@@ -1,0 +1,30 @@
+name: deploy
+
+on:
+  repository_dispatch:
+    types: [deploy-service]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.client_payload.ref }}
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible==2.9.6 requests
+    
+      - name: Run ansible playbook
+        working-directory: cicd
+        run: ansible-playbook --verbose deploy.yaml --extra-vars "app_env=${{ github.event.client_payload.environment }} gh_personal_access_token=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}"

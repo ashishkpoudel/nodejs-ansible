@@ -3,7 +3,7 @@ import express from "express";
 const app = express();
 const port = 3100;
 
-app.get('/', (_req, res) => {
+app.get('/', async (_req, res) => {
   res.send('Hello World..');
 })
 
