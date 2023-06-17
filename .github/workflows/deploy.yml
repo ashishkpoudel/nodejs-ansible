@@ -21,17 +21,16 @@ jobs:
           python-version: 3.8
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install ansible==2.9.6 requests
+        run: sudo apt-get install -y ansible
     
       - name: Setup ssh credentials
         working-directory: cicd
         run: |
           mkdir -p ./credentials
           echo "${{ secrets.SSH_KEY }}" > ./credentials/ssh-key.pem
+          chmod 400 ./credentials/ssh-key.pem
 
       - name: Run ansible playbook
         working-directory: cicd
         run: |
-          ansible-playbook --verbose deploy.yaml --extra-vars "app_env=${{ github.event.client_payload.environment }} gh_personal_access_token=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}"
+          ansible-playbook --verbose deploy.yml --extra-vars "app_env=${{ github.event.client_payload.environment }} gh_personal_access_token=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}"
