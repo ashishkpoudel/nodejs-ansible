@@ -25,8 +25,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install ansible==2.9.6 requests
     
+      - name: Setup ssh credentials
+        working-directory: cicd
+        run: |
+          mkdir -p ./credentials
+          echo "${{ secrets.SSH_KEY }}" > ./credentials/ssh-key.pem
+
       - name: Run ansible playbook
         working-directory: cicd
         run: |
-          echo "${{ secrets.SSH_KEY }}" > ./credentials/ssh-key.pem
           ansible-playbook --verbose deploy.yaml --extra-vars "app_env=${{ github.event.client_payload.environment }} gh_personal_access_token=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}"
