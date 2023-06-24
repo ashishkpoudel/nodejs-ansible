@@ -19,11 +19,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
-      - run: pip install boto3
+      - run: pip install ansible boto3
 
-      - name: Install dependencies
-        run: sudo apt-get install -y ansible
-    
       - name: Setup ssh credentials
         working-directory: cicd
         run: |
