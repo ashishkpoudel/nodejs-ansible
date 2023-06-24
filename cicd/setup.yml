@@ -1,6 +1,6 @@
 ---
 - name: Install common dependencies
-  hosts: app_server
+  hosts: ApiServer
   become: true
   roles:
     - common

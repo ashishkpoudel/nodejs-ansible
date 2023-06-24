@@ -1,0 +1,12 @@
+plugin: amazon.aws.aws_ec2
+
+filters:
+  tag:Name: ApiServer
+
+keyed_groups:
+  - key: tags.Name
+    prefix: "tag_Name"
+    seperator: ""
+
+hostnames:
+  - dns-name
