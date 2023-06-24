@@ -30,5 +30,7 @@ jobs:
 
       - name: Run ansible playbook
         working-directory: cicd
-        run: |
-          ansible-playbook --verbose deploy.yml --extra-vars "app_env=${{ github.event.client_payload.environment }} gh_personal_access_token=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}"
+        run: ansible-playbook --verbose deploy.yml --extra-vars "app_env=${{ github.event.client_payload.environment }} gh_personal_access_token=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
