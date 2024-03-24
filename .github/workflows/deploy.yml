@@ -1,8 +1,32 @@
 name: deploy
 
 on:
-  repository_dispatch:
-    types: [deploy-service]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        type: choice
+        default: 'dev-production'
+        options:
+          - dev-dev
+          - dev-production
+          - production
+      platforms:
+        description: 'App platforms'
+        required: true
+        type: choice
+        default: all
+        options:
+          - all
+          - ios
+          - android
+      backend:
+        description: 'Backend'
+        required: false
+      message:
+        description: 'Message'
+        required: false
 
 jobs:
   deploy:
@@ -16,11 +40,8 @@ jobs:
           ref: ${{ github.event.client_payload.ref }}
 
       - name: Get the commit reference
-        id: get_ref
         run: |
-          echo "::set-output name=ref::$(git rev-parse HEAD)"
-          echo "$(git rev-parse HEAD)"
-
+          echo "$echo github sha: ${{ github.sha }}"
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -51,5 +72,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Use the commit reference
-        run: echo "The commit reference is ${{ steps.get_ref.outputs.ref }}"
+      - name: Get the commit reference
+        run: |
+          echo "$echo github sha: ${{ github.sha }}"
