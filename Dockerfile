@@ -17,3 +17,4 @@ ENV NODE_ENV "production"
 RUN npm prune --production
 
 CMD ["npm", "run", "start"]
+
